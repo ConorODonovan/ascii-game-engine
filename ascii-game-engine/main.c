@@ -13,6 +13,7 @@ By Conor O'Donovan
 // Function declarations
 void drawGameTitle();
 void initialiseGameWindow(char **ptr);
+void updateWindow(char **ptr, int x, int y);
 void drawGameWindow(char **ptr);
 
 // Set up Player struct
@@ -47,8 +48,25 @@ int main()
     P1.y = 10;
 
     updateWindow(window, P1.x, P1.y);
-
     drawGameWindow(window); // Draw the game window to the console
+
+    char pDir;
+
+    while (pDir != 'w' && pDir != 'a' && pDir != 's' && pDir != 'd')
+    {
+        pDir = getchar();
+    }
+
+    if (pDir == 'w')
+    {
+        if (P1.y > 0)
+        {
+            P1.y -= 1;
+        }
+    }
+
+    updateWindow(window, P1.x, P1.y);
+    drawGameWindow(window);
 }
 
 // Draw game title above game window
