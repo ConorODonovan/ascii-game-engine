@@ -15,6 +15,15 @@ void drawGameTitle();
 void initialiseGameWindow(char **ptr);
 void drawGameWindow(char **ptr);
 
+// Set up Player struct
+struct player
+{
+    int x;
+    int y;
+};
+
+typedef struct player Player;
+
 int main()
 {
     int i;
@@ -31,6 +40,13 @@ int main()
     drawGameTitle(); // Put the game title header on the first three lines of the console
 
     initialiseGameWindow(window); // Set up the empty game window
+
+    // Place Player into center of game world
+    Player P1;
+    P1.x = 30;
+    P1.y = 10;
+
+    updateWindow(window, P1.x, P1.y);
 
     drawGameWindow(window); // Draw the game window to the console
 }
@@ -60,7 +76,7 @@ void drawGameTitle()
 }
 
 // Initialise game window
- void initialiseGameWindow(char **ptr)
+void initialiseGameWindow(char **ptr)
 {
     int x;
     int y;
@@ -72,6 +88,11 @@ void drawGameTitle()
             ptr[y][x] = '.';
         }
     }
+}
+
+void updateWindow(char **ptr, int playerX, int playerY)
+{
+    ptr[playerY][playerX] = 'P';
 }
 
 // Draw the game window to the console
