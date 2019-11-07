@@ -15,6 +15,7 @@ void drawGameTitle();
 void initialiseGameWindow(char **ptr);
 void updateWindow(char **ptr, int x, int y, int prevX, int prevY);
 void drawGameWindow(char **ptr);
+void addEnvironmentalObjects(char **ptr);
 
 // Set up Player struct
 struct player
@@ -32,11 +33,11 @@ int main()
 
     char **window; // Initialise 2D array to act as game window
 
-    window = malloc(WINDOW_WIDTH * sizeof *window);
+    window = malloc(WINDOW_HEIGHT * sizeof *window);
 
-    for (i = 0; i < WINDOW_WIDTH; i++)
+    for (i = 0; i < WINDOW_HEIGHT; i++)
     {
-        window[i] = malloc(WINDOW_HEIGHT * sizeof * window[i]);
+        window[i] = malloc(WINDOW_WIDTH * sizeof * window[i]);
     }
 
     drawGameTitle(); // Put the game title header on the first three lines of the console
@@ -56,6 +57,7 @@ int main()
     prevY = 10;
 
     updateWindow(window, P1.x, P1.y, prevX, prevY);
+    addEnvironmentalObjects(window);
     drawGameWindow(window); // Draw the game window to the console
 
     char pDir = '-';
@@ -74,28 +76,28 @@ int main()
 
         if (pDir == 'w')
         {
-            if (P1.y > 0)
+            if (P1.y > 0 && window[P1.y - 1][P1.x] != 'A')
             {
                 P1.y -= 1;
             }
         }
         else if (pDir == 's')
         {
-            if (P1.y < WINDOW_HEIGHT - 1)
+            if (P1.y < WINDOW_HEIGHT - 1 && window[P1.y + 1][P1.x] != 'A')
             {
                 P1.y += 1;
             }
         }
         else if (pDir == 'a')
         {
-            if (P1.x > 0)
+            if (P1.x > 0 && window[P1.y][P1.x - 1] != 'A')
             {
                 P1.x -= 1;
             }
         }
         else if (pDir == 'd')
         {
-            if (P1.x < WINDOW_WIDTH - 1)
+            if (P1.x < WINDOW_WIDTH - 1 && window[P1.y][P1.x + 1] != 'A')
             {
                 P1.x += 1;
             }
@@ -169,4 +171,27 @@ void drawGameWindow(char **windowPtr)
 
         printf("\n");
     }
+}
+
+// Add environmental objects to the game world
+void addEnvironmentalObjects(char **ptr)
+{
+    ptr[3][6] = 'A';
+    ptr[12][2] = 'A';
+    ptr[4][7] = 'A';
+    ptr[9][9] = 'A';
+    ptr[17][45] = 'A';
+    ptr[10][54] = 'A';
+    ptr[4][6] = 'A';
+    ptr[12][3] = 'A';
+    ptr[11][58] = 'A';
+    ptr[1][2] = 'A';
+    ptr[18][50] = 'A';
+    ptr[10][50] = 'A';
+    ptr[8][48] = 'A';
+    ptr[7][17] = 'A';
+    ptr[6][39] = 'A';
+    ptr[2][30] = 'A';
+    ptr[15][15] = 'A';
+    ptr[15][45] = 'A';
 }
