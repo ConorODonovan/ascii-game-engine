@@ -13,7 +13,7 @@ By Conor O'Donovan
 // Function declarations
 void drawGameTitle();
 void initialiseGameWindow(char **ptr);
-void updateWindow(char **ptr, int x, int y);
+void updateWindow(char **ptr, int x, int y, int prevX, int prevY);
 void drawGameWindow(char **ptr);
 
 // Set up Player struct
@@ -21,6 +21,7 @@ struct player
 {
     int x;
     int y;
+    int health;
 };
 
 typedef struct player Player;
@@ -42,31 +43,70 @@ int main()
 
     initialiseGameWindow(window); // Set up the empty game window
 
+
+    int prevX;
+    int prevY;
+
     // Place Player into center of game world
     Player P1;
     P1.x = 30;
     P1.y = 10;
+    P1.health = 100;
+    prevX = 29;
+    prevY = 10;
 
-    updateWindow(window, P1.x, P1.y);
+    updateWindow(window, P1.x, P1.y, prevX, prevY);
     drawGameWindow(window); // Draw the game window to the console
 
-    char pDir;
+    char pDir = '-';
 
-    while (pDir != 'w' && pDir != 'a' && pDir != 's' && pDir != 'd')
+    // Game loop
+    while (1)
     {
-        pDir = getchar();
-    }
+        prevX = P1.x;
+        prevY = P1.y;
 
-    if (pDir == 'w')
-    {
-        if (P1.y > 0)
+        printf("Pick a direction using WASD and press Enter\n");
+        while (pDir != 'w' && pDir != 'a' && pDir != 's' && pDir != 'd')
         {
-            P1.y -= 1;
+            pDir = getchar();
         }
-    }
 
-    updateWindow(window, P1.x, P1.y);
-    drawGameWindow(window);
+        if (pDir == 'w')
+        {
+            if (P1.y > 0)
+            {
+                P1.y -= 1;
+            }
+        }
+        else if (pDir == 's')
+        {
+            if (P1.y < WINDOW_HEIGHT - 1)
+            {
+                P1.y += 1;
+            }
+        }
+        else if (pDir == 'a')
+        {
+            if (P1.x > 0)
+            {
+                P1.x -= 1;
+            }
+        }
+        else if (pDir == 'd')
+        {
+            if (P1.x < WINDOW_WIDTH - 1)
+            {
+                P1.x += 1;
+            }
+        }
+
+        pDir = '-';
+
+        drawGameTitle();
+        updateWindow(window, P1.x, P1.y, prevX, prevY);
+        drawGameWindow(window);
+    }
 }
 
 // Draw game title above game window
@@ -108,9 +148,10 @@ void initialiseGameWindow(char **ptr)
     }
 }
 
-void updateWindow(char **ptr, int playerX, int playerY)
+void updateWindow(char **ptr, int playerX, int playerY, int prevX, int prevY)
 {
-    ptr[playerY][playerX] = 'P';
+    ptr[prevY][prevX] = '.';
+    ptr[playerY][playerX] = 'O';
 }
 
 // Draw the game window to the console
