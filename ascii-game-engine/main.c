@@ -195,4 +195,6 @@ void addEnvironmentalObjects(char **ptr)
     ptr[15][15] = 'A';
     ptr[15][45] = 'A';
     ptr[7][31] = 'A';
+    ptr[7][32] = 'A';
+    ptr[7][33] = 'A';
 }
